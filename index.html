@@ -143,7 +143,7 @@ footer {
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2 style="margin: 0; font-size: 24px; font-weight: bold; color: #2c3e50; display: flex; align-items: center;">
       <img src="https://i.imgur.com/uWrz8rt.png" alt="School Logo" style="height: 150px; margin-right: 12px;">
-      NACHU  PRIMARY SCHOOL 
+      NACHU  PRIMARY SCHOOL /LOWER
     </h2>
     <button onclick="logout()" style="background-color: #f44336; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; border: none; cursor: pointer;">
       <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
@@ -383,8 +383,8 @@ footer {
 </div>
 <footer>
   <div class="footer-text">
- Streamline Your School With RASM Tech!
-Generate accurate class timetables per stream and get automatic teacher timetables in seconds  all aligned with Ministry of Education guidelines. Say goodbye to manual scheduling and hello to smart, efficient school management. Powered by RASM Technologies.
+ Timetabling Made Effortless with RASM Tech!
+Create flawless, Ministry-compliant class and teacher timetables in seconds. Streamline your schoolâ€™s workflow, cut out manual errors, and embrace smart, modern scheduling. Built by RASM Technologies.
 
  2025 Nachu Primary School | All rights reserved. | Powered by RASM Technologies
   </div>
@@ -401,12 +401,12 @@ const subjects = {
   threePerWeek: ['CRE'],
   sixPerWeek: [], // No subjects currently at 6 per week
   sevenPerWeek: ['Creative Activities'], // New custom category
-  onePerWeek: ['PPI']
+  onePerWeek: ['PPI','Indigenous Language']
 };
 
 const periods = ['8:00-8:40', '8:40-9:20', 'Break', '9:50-10:30', '10:30-11:10', 'Break', '11:35-12:15', '12:15-12:55', 'Lunch', '2:00-2:40', 'Games & Clubs', 'Games'];
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-const lessonSlots = [0,1,3,4,6,7,9];
+const lessonSlots = [0,1,3,4,6,7];
 let teacherSchedule = {};
 
 // Extract unique grades from the teachers list
@@ -587,8 +587,8 @@ function generateSchedule(grade) {
   const assign = assignments[grade];
   if (!assign) return null;
 
-  const mathPeriodsOnly = [0, 1, 3, 4, 6, 7]; // 8:00–12:55 periods
-  const allowedPeriodsFor = (subj) => subj === 'Mathematics' ? mathPeriodsOnly : null;
+  const mathPeriodsOnly = [0, 1, 3, 4, 6, 7]; // 8:00â€“12:55 periods
+const allowedPeriodsFor = (subj) => subj === 'Maths' ? mathPeriodsOnly : null;
 
   const assignedSubjects = [
     ...(subjects.sevenPerWeek || []),
@@ -652,7 +652,7 @@ function generateSchedule(grade) {
   // STEP 0: Force PPI to be the first lesson on Friday
   if (assign['PPI']) {
     const tid = assign['PPI'];
-    const p = 0; // 8:00–8:40
+    const p = 0; // 8:00â€“8:40
     if (!schedule['Fri'][p] && isFree(tid, 'Fri', p + 1)) {
       schedule['Fri'][p] = `PPI (T${tid})`;
       occupy(tid, 'Fri', p + 1);
@@ -782,76 +782,96 @@ function generateCombinedTimetable() {
   selected.forEach(grade => {
     allSchedules[grade] = generateSchedule(grade);
   });
+const wrapper = document.createElement('div');
+wrapper.className = 'mb-8 p-4 border shadow-md rounded-2xl bg-white overflow-auto';
 
-  const wrapper = document.createElement('div');
-  wrapper.className = 'mb-8 p-4 border shadow-md rounded-2xl bg-white overflow-auto';
+// ?? Define row colors per grade (will cycle through if more grades than colors)
+const gradeColors = [
+  '#f8f9fa', // light gray
+  '#e0f7fa', // cyan
+  '#f1f8e9', // light green
+  '#fff3e0', // orange
+  '#fce4ec', // pink
+  '#ede7f6', // light purple
+  '#e8f5e9', // mint
+  '#fffde7', // yellow
+  '#e3f2fd', // light blue
+];
 
-  let html = `
-    <style>
-      #combined-timetable table, 
-      #combined-timetable th, 
-      #combined-timetable td {
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-      #combined-timetable th, 
-      #combined-timetable td {
-        padding: 8px;
-        text-align: center;
-      }
-      #combined-timetable thead {
-        background-color: #f1f1f1;
-        font-weight: bold;
-      }
-      .break-cell {
-        background-color: #ffeeba;
-      }
-      .lunch-cell {
-        background-color: #c3e6cb;
-      }
-      .games-cell {
-        background-color: #bee5eb;
-      }
-    </style>
+let html = `
+  <style>
+    #combined-timetable table, 
+    #combined-timetable th, 
+    #combined-timetable td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    #combined-timetable th, 
+    #combined-timetable td {
+      padding: 8px;
+      text-align: center;
+    }
+    #combined-timetable thead {
+      background-color: #f1f1f1;
+      font-weight: bold;
+    }
+    .break-cell {
+      background-color: #ffeeba;
+    }
+    .lunch-cell {
+      background-color: #c3e6cb;
+    }
+    .games-cell {
+      background-color: #bee5eb;
+    }
+  </style>
 
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-bold text-white bg-red-600 px-4 py-2 rounded shadow-md">
-        <i class="fas fa-calendar-alt mr-2"></i> Generated Master Timetable Is Here
-      </h3>
-    </div>
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-xl font-bold text-white bg-red-600 px-4 py-2 rounded shadow-md">
+      <i class="fas fa-calendar-alt mr-2"></i> Generated Master Timetable Is Here
+    </h3>
+  </div>
 
-    <table class="w-full text-sm">
-      <thead>
-        <tr>
-          <th>Day</th>
-          <th>Grade</th>`;
+  <table class="w-full text-sm">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Grade</th>`;
 
-  periods.forEach(t => {
-    html += `<th>${t}</th>`;
-  });
+periods.forEach(t => {
+  html += `<th>${t}</th>`;
+});
 
-  html += `</tr></thead><tbody>`;
+html += `</tr></thead><tbody>`;
 
-  days.forEach(day => {
-    Object.entries(allSchedules).forEach(([grade, schedule]) => {
-      html += `<tr><td>${day}</td><td>${grade}</td>`;
-      schedule[day].forEach(subject => {
-        const lower = subject.toLowerCase();
-        let cellClass = '';
-        if (lower.includes('break')) cellClass = 'break-cell';
-        else if (lower.includes('lunch')) cellClass = 'lunch-cell';
-        else if (lower.includes('games')) cellClass = 'games-cell';
-        html += `<td class="${cellClass}">${subject}</td>`;
-      });
-      html += `</tr>`;
+// ?? Color each grade consistently using color index
+const gradeColorMap = {};
+let colorIndex = 0;
+Object.keys(allSchedules).forEach(grade => {
+  gradeColorMap[grade] = gradeColors[colorIndex % gradeColors.length];
+  colorIndex++;
+});
+
+days.forEach(day => {
+  Object.entries(allSchedules).forEach(([grade, schedule]) => {
+    const bgColor = gradeColorMap[grade];
+    html += `<tr style="background-color: ${bgColor};"><td>${day}</td><td>${grade}</td>`;
+    schedule[day].forEach(subject => {
+      const lower = subject.toLowerCase();
+      let cellClass = '';
+      if (lower.includes('break')) cellClass = 'break-cell';
+      else if (lower.includes('lunch')) cellClass = 'lunch-cell';
+      else if (lower.includes('games')) cellClass = 'games-cell';
+      html += `<td class="${cellClass}">${subject}</td>`;
     });
+    html += `</tr>`;
   });
+});
 
-  html += `</tbody></table>`;
-  wrapper.innerHTML = html;
-  output.appendChild(wrapper);
+html += `</tbody></table>`;
+wrapper.innerHTML = html;
+output.appendChild(wrapper);
 }
-
 function showCustomAlert(message, color) {
   const alertBox = document.createElement('div');
   alertBox.className = 'custom-alert';
