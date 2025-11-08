@@ -420,7 +420,7 @@ footer {
 </button>
 <div class="no-print" id="term-combined-title" style="margin-bottom: 10px;">
 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 14px;">
-  <span><strong>Term:</strong> Select term to show on printed timetable</span>
+<span style="color:red;"><strong>Term:</strong> Select term to show on printed timetable</span>
   <select id="term-selector" style="padding: 6px; font-size: 14px; border-radius: 4px;">
     <option value="Term 1">Term 1</option>
     <option value="Term 2">Term 2</option>
@@ -436,6 +436,44 @@ footer {
 <div id="extracted-timetables" style="margin-top: 40px;"></div>
 <div style="margin-top: 30px;">
 
+</div>
+<div id="welcome-modal" style="
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:50%;
+    height:50%;
+    background-color: rgba(0,0,0,0.7);
+    color:white;
+    text-align:center;
+    padding:50px;
+    z-index:9999;
+">
+  <div style="
+      background-color:#4CAF50;
+      display:inline-block;
+      padding:40px;
+      border-radius:15px;
+      max-width:600px;
+      line-height:1.6;
+      font-size:18px;
+  ">
+    <h2>Timetabling Made Effortless with RASM Tech!</h2>
+    <p>Create flawless, Ministry-compliant class and teacher timetables in seconds.</p>
+    <p>Streamline your school’s workflow, cut out manual errors, and embrace smart, modern scheduling.</p>
+    <p><strong>Built by RASM Technologies</strong></p>
+    <button onclick="document.getElementById('welcome-modal').style.display='none';" style="
+        margin-top:20px;
+        padding:10px 20px;
+        font-size:16px;
+        background:white;
+        color:#4CAF50;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+    ">Continue</button>
+  </div>
 </div>
 
 <!-- Add this modal HTML to your page -->
@@ -1027,35 +1065,26 @@ function toggleGradeSelector() {
     const container = document.getElementById("grade-container");
     container.style.display = (container.style.display === "none") ? "block" : "none";
   }
-  function login() { 
+function login() { 
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
   
-  // Dummy validation for now (replace with real authentication logic)
   if (username === "admin" && password === "7") {
-    // Hide login page and show the main content
     document.getElementById('login-page').style.display = 'none';
     document.getElementById('single-view').style.display = 'block';
 
-    // Populate teacher dropdown after login
-    populateTeacherDropdown();
+    // Show welcome modal
+    document.getElementById('welcome-modal').style.display = 'block';
+
+    // Optional: populate teacher dropdown if function exists
+    if (typeof populateTeacherDropdown === 'function') {
+      populateTeacherDropdown();
+    }
+
   } else {
     document.getElementById('login-error').style.display = 'block';
   }
 }
-
- function toggleButtonGroup() {
-    const group = document.getElementById('button-group');
-    const toggleBtn = event.currentTarget;
-
-    if (group.style.display === "none") {
-      group.style.display = "flex";
-      toggleBtn.innerHTML = '<i class="fas fa-eye-slash" style="margin-right: 8px;"></i> Hide Controls';
-    } else {
-      group.style.display = "none";
-      toggleBtn.innerHTML = '<i class="fas fa-tools" style="margin-right: 8px;"></i> Show Controls';
-    }
-  }
 
 
  function toggleRegisterForm() {
