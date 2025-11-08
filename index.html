@@ -108,7 +108,15 @@ footer {
     transform: translateX(-100%);
   }
 }
-
+ /* Existing styling... */
+    .hidden { display: none; }
+    .instructions-box {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f4f4f4;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
 
 
@@ -143,7 +151,7 @@ footer {
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2 style="margin: 0; font-size: 24px; font-weight: bold; color: #2c3e50; display: flex; align-items: center;">
       <img src="https://i.imgur.com/uWrz8rt.png" alt="School Logo" style="height: 150px; margin-right: 12px;">
-      NACHU  PRIMARY SCHOOL /LOWER
+   RASM TECHNOLOGIES LIMITED /LOWER PRIMARY 
     </h2>
     <button onclick="logout()" style="background-color: #f44336; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; border: none; cursor: pointer;">
       <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
@@ -186,103 +194,158 @@ footer {
     Register Teacher
   </button>
 </div>
-
-<!-- Hidden Register Form -->
-<div id="register-teacher-box" class="box" style="display: none;">
-  <h2 style="
-    background-color: #e9f5ff;
-    color: #0056b3;
-    padding: 10px 20px;
-    border-left: 6px solid #0056b3;
-    border-radius: 6px;
-    font-size: 22px;
-    margin-top: 30px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  ">
-    Register Teacher
-  </h2>
-
-  <input id="teacher-name" placeholder="Teacher Name">
-  <input id="teacher-id" placeholder="Teacher Number" type="number">
-  <button onclick="registerTeacher()" style="background-color: #4caf50; color: white;">
-    <i class="fas fa-user-plus"></i> Register
+<!-- Button to display instructions -->
+  <button onclick="toggleInstructions()" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; border: none; cursor: pointer;">
+    Show Timetable Instructions
   </button>
+<!-- Hidden instructions section -->
+  <div id="instructions" class="instructions-box hidden">
+    <h3>How to Use the Timetable Generator:</h3>
+    <ol>
+      <li><strong>Login:</strong> Enter the username ("admin") and password ("7") to access the main interface.</li>
+      <li><strong>Register Teachers:</strong> Click "Register Teacher", fill in the teacher's name and ID, and click "Register".</li>
+      <li><strong>Assign Subjects:</strong> After registering teachers, select a grade and assign subjects to the teachers.</li>
+      <li><strong>Select Grades:</strong> Choose which grades to generate the timetable for.</li>
+      <li><strong>Generate Timetable:</strong> Click "Generate Master Timetable" to create the timetable for the selected grades.</li>
+      <li><strong>Print Timetable:</strong> After generating the timetable, click "Print Timetable" to print the timetable.</li>
+      <li><strong>Extract Timetables:</strong> Extract individual timetables for classes and teachers by clicking "Extract Class & Teacher Timetables".</li>
+      <li><strong>Logout:</strong> Click "Logout" to log out from the system.</li>
+    </ol>
+  </div>
+<!-- Hidden Register Form -->
+<div id="register-teacher-box" class="box" style="display: none; padding: 20px; background-image: url('https://i.imgur.com/ooaHUL2.jpeg'); background-size: cover; background-position: center; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); position: relative;">
+  <div style="background-color: rgba(0, 0, 0, 0.4); padding: 20px; border-radius: 8px;">
+    <h2 style="
+      color: #fff;
+      padding: 10px 20px;
+      border-left: 6px solid #0056b3;
+      border-radius: 6px;
+      font-size: 22px;
+      margin-top: 0;
+    ">
+      Register Teacher
+    </h2>
 
-  <ul id="teacher-list"></ul>
+    <input id="teacher-name" placeholder="Teacher Name" style="margin-bottom: 10px; padding: 8px; width: 100%; border-radius: 6px; border: 1px solid #ccc;">
+    <input id="teacher-id" placeholder="Teacher Number" type="number" style="margin-bottom: 10px; padding: 8px; width: 100%; border-radius: 6px; border: 1px solid #ccc;">
+    <button onclick="registerTeacher()" style="background-color: #4caf50; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; border: none; cursor: pointer;">
+      <i class="fas fa-user-plus"></i> Register
+    </button>
+<!-- Button to Delete All Teachers -->
+<div style="margin-bottom: 20px;">
+  <button onclick="deleteAllTeachers()" style="background-color: #f44336; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; border: none; cursor: pointer;">
+    <i class="fas fa-trash-alt" style="margin-right: 8px;"></i> Delete All Teachers
+  </button>
 </div>
 
-  
+    <ul id="teacher-list" style="margin-top: 20px;"></ul>
+  </div>
+</div>
 
-       <div class="box">
+<!-- Assign Subjects to Teachers (Per Grade) -->
+<div class="box" style="margin-top: 30px; padding: 20px; background-image: url('https://i.imgur.com/00bSmZX.jpeg'); background-size: cover; background-position: center; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); position: relative;">
+  <div style="background-color: rgba(0, 0, 0, 0.4); padding: 20px; border-radius: 8px;">
     <h2 style="
-  background-color: #e6f9ec;
-  color: #2e7d32;
-  padding: 10px 20px;
-  border-left: 6px solid #2e7d32;
-  border-radius: 6px;
-  font-size: 22px;
-  margin-top: 30px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-">
-  Assign Subjects to Teachers (Per Grade)
-</h2>
+      color: #fff;
+      padding: 10px 20px;
+      border-left: 6px solid #2e7d32;
+      border-radius: 6px;
+      font-size: 22px;
+      margin-top: 0;
+    ">
+      Assign Subjects to Teachers (Per Grade)
+    </h2>
 
-      <select id="assign-grade">
-        <option disabled selected>Select Grade</option>
-         <option value="1">Grade 1</option>
-<option value="1Red">Grade 1 Red</option>
-<option value="1Blue">Grade 1 Blue</option>
-<option value="1Green">Grade 1 Green</option>
-<option value="1Yellow">Grade 1 Yellow</option>
+    <select id="assign-grade" style="width: 100%; padding: 10px; font-size: 16px; border: 2px solid #3498db; border-radius: 8px; background-color: #ecf0f1; color: #2c3e50; transition: 0.3s ease; margin-bottom: 20px;">
+      <option disabled selected>Select Grade</option>
+      <option value="1">Grade 1</option>
+      <option value="1Red">Grade 1 Red</option>
+      <option value="1Blue">Grade 1 Blue</option>
+      <option value="1Green">Grade 1 Green</option>
+      <option value="1Yellow">Grade 1 Yellow</option>
+      <option value="2">Grade 2</option>
+      <option value="2Red">Grade 2 Red</option>
+      <option value="2Blue">Grade 2 Blue</option>
+      <option value="2Green">Grade 2 Green</option>
+      <option value="2Yellow">Grade 2 Yellow</option>
+      <option value="3">Grade 3</option>
+      <option value="3Red">Grade 3 Red</option>
+      <option value="3Blue">Grade 3 Blue</option>
+      <option value="3Green">Grade 3 Green</option>
+      <option value="3Yellow">Grade 3 Yellow</option>
+    </select>
 
-<option value="2">Grade 2</option>
-<option value="2Red">Grade 2 Red</option>
-<option value="2Blue">Grade 2 Blue</option>
-<option value="2Green">Grade 2 Green</option>
-<option value="2Yellow">Grade 2 Yellow</option>
+    <div id="subject-assignment" style="margin-bottom: 20px;"></div>
 
-<option value="3">Grade 3</option>
-<option value="3Red">Grade 3 Red</option>
-<option value="3Blue">Grade 3 Blue</option>
-<option value="3Green">Grade 3 Green</option>
-<option value="3Yellow">Grade 3 Yellow</option>
+    <button onclick="saveAssignments()" style="background-color: #ff9800; color: white; padding: 10px 20px; border-radius: 8px; font-size: 16px; border: none; cursor: pointer;">
+      <i class="fas fa-save"></i> Save Assignments
+    </button>
 
-      </select>
-      <div id="subject-assignment"></div>
-  <button onclick="saveAssignments()" style="background-color: #ff9800; color: white;">
-  <i class="fas fa-save"></i> Save Assignments
-</button>
-<!-- Toggle Button -->
-<button onclick="toggleGradeSelector()" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-bottom: 10px;">
-  <i class="fas fa-sliders-h" style="margin-right: 8px;"></i>
-  Select Grades
-</button>
+    <!-- Toggle Button -->
+    <button onclick="toggleGradeSelector()" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 20px;">
+      <i class="fas fa-sliders-h" style="margin-right: 8px;"></i>
+      Select Grades
+    </button>
+  </div>
+</div>
 
 <!-- Grade Selector Form -->
-<div id="grade-container" style="display: none; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #f2f2f2; width: 300px; margin: 0 auto;">
-  <h2 style="color: #2e7d32; text-align: center;">Select Grades to Generate Timetable</h2>
+<div id="grade-container" style="display: none; margin-top: 30px; padding: 20px; background-image: url('https://i.imgur.com/FO2pJHo.jpeg'); background-size: cover; background-position: center; width: 300px; margin: 0 auto; border: 1px solid #ccc; border-radius: 8px; position: relative;">
+  <div style="background-color: rgba(0, 0, 0, 0.4); padding: 20px; border-radius: 8px;">
+    <h2 style="color: #fff; text-align: center; margin-bottom: 20px;">Select Grades to Generate Timetable</h2>
 
-  <form id="grade-selector" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-   <label><input type="checkbox" name="grade" value="1"> Grade 1</label>
-<label><input type="checkbox" name="grade" value="1Red"> Grade 1 Red</label>
-<label><input type="checkbox" name="grade" value="1Blue"> Grade 1 Blue</label>
-<label><input type="checkbox" name="grade" value="1Green"> Grade 1 Green</label>
-<label><input type="checkbox" name="grade" value="1Yellow"> Grade 1 Yellow</label>
+    <form id="grade-selector" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <label style="padding: 10px; background-color: #fdebd0; border-radius: 8px; color: #7e5109;">
+        <input type="checkbox" name="grade" value="1"> Grade 1
+      </label>
+      <label style="padding: 10px; background-color: #fdebd0; border-radius: 8px; color: #7e5109;">
+        <input type="checkbox" name="grade" value="1Red"> Grade 1 Red
+      </label>
+      <label style="padding: 10px; background-color: #fdebd0; border-radius: 8px; color: #7e5109;">
+        <input type="checkbox" name="grade" value="1Blue"> Grade 1 Blue
+      </label>
+      <label style="padding: 10px; background-color: #fdebd0; border-radius: 8px; color: #7e5109;">
+        <input type="checkbox" name="grade" value="1Green"> Grade 1 Green
+      </label>
+      <label style="padding: 10px; background-color: #fdebd0; border-radius: 8px; color: #7e5109;">
+        <input type="checkbox" name="grade" value="1Yellow"> Grade 1 Yellow
+      </label>
 
-<label><input type="checkbox" name="grade" value="2"> Grade 2</label>
-<label><input type="checkbox" name="grade" value="2Red"> Grade 2 Red</label>
-<label><input type="checkbox" name="grade" value="2Blue"> Grade 2 Blue</label>
-<label><input type="checkbox" name="grade" value="2Green"> Grade 2 Green</label>
-<label><input type="checkbox" name="grade" value="2Yellow"> Grade 2 Yellow</label>
+      <label style="padding: 10px; background-color: #e8daef; border-radius: 8px; color: #512e5f;">
+        <input type="checkbox" name="grade" value="2"> Grade 2
+      </label>
+      <label style="padding: 10px; background-color: #e8daef; border-radius: 8px; color: #512e5f;">
+        <input type="checkbox" name="grade" value="2Red"> Grade 2 Red
+      </label>
+      <label style="padding: 10px; background-color: #e8daef; border-radius: 8px; color: #512e5f;">
+        <input type="checkbox" name="grade" value="2Blue"> Grade 2 Blue
+      </label>
+      <label style="padding: 10px; background-color: #e8daef; border-radius: 8px; color: #512e5f;">
+        <input type="checkbox" name="grade" value="2Green"> Grade 2 Green
+      </label>
+      <label style="padding: 10px; background-color: #e8daef; border-radius: 8px; color: #512e5f;">
+        <input type="checkbox" name="grade" value="2Yellow"> Grade 2 Yellow
+      </label>
 
-<label><input type="checkbox" name="grade" value="3"> Grade 3</label>
-<label><input type="checkbox" name="grade" value="3Red"> Grade 3 Red</label>
-<label><input type="checkbox" name="grade" value="3Blue"> Grade 3 Blue</label>
-<label><input type="checkbox" name="grade" value="3Green"> Grade 3 Green</label>
-<label><input type="checkbox" name="grade" value="3Yellow"> Grade 3 Yellow</label>
- 
-  </form>
+      <label style="padding: 10px; background-color: #f9e79f; border-radius: 8px; color: #7f5c2a;">
+        <input type="checkbox" name="grade" value="3"> Grade 3
+      </label>
+      <label style="padding: 10px; background-color: #f9e79f; border-radius: 8px; color: #7f5c2a;">
+        <input type="checkbox" name="grade" value="3Red"> Grade 3 Red
+      </label>
+      <label style="padding: 10px; background-color: #f9e79f; border-radius: 8px; color: #7f5c2a;">
+        <input type="checkbox" name="grade" value="3Blue"> Grade 3 Blue
+      </label>
+      <label style="padding: 10px; background-color: #f9e79f; border-radius: 8px; color: #7f5c2a;">
+        <input type="checkbox" name="grade" value="3Green"> Grade 3 Green
+      </label>
+      <label style="padding: 10px; background-color: #f9e79f; border-radius: 8px; color: #7f5c2a;">
+        <input type="checkbox" name="grade" value="3Yellow"> Grade 3 Yellow
+      </label>
+    </form>
+  </div>
 </div>
+
 
  <button onclick="generateCombinedTimetable()" class="btn btn-primary" style="background-color: #007bff; color: white;">
       <i class="fas fa-calendar-check"></i> Generate Master Timetable
@@ -386,7 +449,7 @@ footer {
  Timetabling Made Effortless with RASM Tech!
 Create flawless, Ministry-compliant class and teacher timetables in seconds. Streamline your school’s workflow, cut out manual errors, and embrace smart, modern scheduling. Built by RASM Technologies.
 
- 2025 Nachu Primary School | All rights reserved. | Powered by RASM Technologies
+ 2025  | All rights reserved. | Powered by RASM Technologies
   </div>
 </footer>
 </body>
@@ -919,7 +982,7 @@ function printCombinedTimetable() {
   const headerHTML = `
     <div style="text-align:center; margin-bottom: 20px;">
       <img src="${logoURL}" alt="School Logo" style="height: 80px; margin-bottom: 10px;"><br>
-      <h2 style="margin: 0; font-family: Arial;">NACHU PRIMARY  SCHOOL</h2>
+      <h2 style="margin: 0; font-family: Arial;">RASM PRIMARY  SCHOOL</h2>
       <h3 style="margin: 0; font-family: Arial;">MASTER TIMETABLE 2025</h3>
       <p style="font-family: Arial;"><strong>TERM:</strong> ${term}</p>
     </div>
@@ -1305,7 +1368,7 @@ function buildTable(schedule, headers) {
   const headerHTML = `
     <div style="text-align: center; margin-bottom: 20px;">
       <img src="${logoURL}" style="height: 80px; margin-bottom: 10px;"><br>
-      <h2 style="margin: 0; font-size: 24px; font-family: Arial; font-weight: bold;">NACHU PRIMARY  SCHOOL</h2>
+      <h2 style="margin: 0; font-size: 24px; font-family: Arial; font-weight: bold;">RASM PRIMARY  SCHOOL</h2>
       <h3 style="margin: 0; font-size: 18px; font-family: Arial; font-weight: bold;">${headerText}</h3>
     </div>
   `;
@@ -1374,6 +1437,29 @@ function buildTable(schedule, headers) {
   printWindow.print();
   printWindow.close();
 }
+function toggleInstructions() {
+      const instructions = document.getElementById('instructions');
+      instructions.classList.toggle('hidden');
+    }
+// Function to delete all teachers
+function deleteAllTeachers() {
+  showCustomConfirm('Are you sure you want to delete all registered teachers?', function(confirmed) {
+    if (confirmed) {
+      // Clear the teachers array
+      teachers = [];
+
+      // Save the empty list to localStorage
+      localStorage.setItem('teachers', JSON.stringify(teachers));
+
+      // Re-render the teacher list
+      updateTeacherLists();
+
+      // Show a success message
+      showCustomAlert('All teachers have been deleted.', 'green');  // Green alert for success
+    }
+  });
+}
+
 </script>
  
 </body>
